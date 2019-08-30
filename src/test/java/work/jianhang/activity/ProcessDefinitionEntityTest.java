@@ -5,6 +5,7 @@ import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.junit.Test;
 
 import java.util.List;
@@ -73,4 +74,24 @@ public class ProcessDefinitionEntityTest {
         }
     }
 
+    /**
+     * 得到当前正在执行的流程实例的activityimpl-->PvmTransition
+     */
+    @Test
+    public void testQueryActivityImpl() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) processEngine.getRepositoryService().getProcessDefinition("shenqing:3:15004");
+        // 根据piid获取得到activityId
+        ProcessInstance processInstance = processEngine.getRuntimeService().createProcessInstanceQuery()
+                .processInstanceId("22501")
+                .singleResult();
+        // 根据流程实例得到当前正在执行的流程实例的正在执行的节点
+        ActivityImpl activity = processDefinitionEntity.findActivity(processInstance.getActivityId());
+        System.out.println("流程实例id:" + processInstance.getId());
+        System.out.println("当前正在执行的节点："+ activity.getId());
+        System.out.println("hegiht:"+activity.getHeight());
+        System.out.println("width:"+ activity.getWidth());
+        System.out.println("x:"+activity.getX());
+        System.out.println("y:"+activity.getY());
+    }
 }
