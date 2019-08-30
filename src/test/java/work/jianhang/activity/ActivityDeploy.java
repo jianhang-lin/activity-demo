@@ -189,4 +189,15 @@ public class ActivityDeploy {
         ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("shenqing");
         System.out.println(processInstance.getId());
     }
+
+    /**
+     * 完成任务
+     */
+    @Test
+    public void testFinishTask() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+         //processEngine.getTaskService().complete("22504");
+    }
+
+
 }
