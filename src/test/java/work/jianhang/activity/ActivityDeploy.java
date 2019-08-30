@@ -6,7 +6,7 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.junit.Test;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -111,5 +111,27 @@ public class ActivityDeploy {
         for (ProcessDefinition processDefinition : processDefinitions) {
             System.out.println(processDefinition.getName() + processDefinition.getVersion());
         }
+    }
+
+    /**
+     * 查看流程图
+     * 根据deploymentId和name(在act_ge_bytearray数据表中)
+     */
+    @Test
+    public void testShowImage() throws IOException {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        InputStream inputStream = processEngine.getRepositoryService()
+                            /**
+                             * deploymentID
+                             * 文件的名称和路径
+                             */
+                        .getResourceAsStream("1", "shenqing.png");
+        OutputStream outputStream = new FileOutputStream("/home/grant/IdeaProjects/activity/src/test/java/work/jianhang/activity/1.png");
+        int b = -1;
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b);
+        }
+        inputStream.close();
+        outputStream.close();
     }
 }
