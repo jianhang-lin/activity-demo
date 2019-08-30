@@ -91,5 +91,13 @@ public class ActivitiTest {
         }
     }
 
-
+    /**
+     * 7.教务处大毛完成任务
+     */
+    @Test
+    public void testFinishTaskManagerByDaMao() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        //查看act_ru_task数据表
+        processEngine.getTaskService().complete("7502");
+    }
 }
