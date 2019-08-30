@@ -65,4 +65,16 @@ public class ActivitiTest {
             System.out.println(task.getName());
         }
     }
+
+    /**
+     * 班主任小毛完成任务
+     */
+    @Test
+    public void testFinishTaskManager() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        //查看act_ru_task数据表
+        processEngine.getTaskService().complete("5002");
+    }
+
+
 }
