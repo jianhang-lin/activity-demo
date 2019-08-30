@@ -231,4 +231,19 @@ public class ActivityDeploy {
             System.out.println(task.getName() + ":"+ task.getAssignee());
         }
     }
+
+    /**
+     * 根据piid查询任务
+     */
+    @Test
+    public void testQueryTaskByPiid() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Task> tasks = processEngine.getTaskService()
+                .createTaskQuery()
+                .executionId("22501")
+                .list();
+        for (Task task : tasks) {
+            System.out.println(task.getName() + ":"+ task.getAssignee());
+        }
+    }
 }
