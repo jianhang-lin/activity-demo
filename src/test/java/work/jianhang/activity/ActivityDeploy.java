@@ -2,6 +2,7 @@ package work.jianhang.activity;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -259,4 +260,24 @@ public class ActivityDeploy {
         String activityId = processInstance.getActivityId();
         System.out.println(activityId);
     }
+
+    /**
+     * 查看已经完成的任务和当前在执行的任务
+     */
+    @Test
+    public void findHistoryTask() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        //如果只想获取到已经执行完成的，那么就要加入completed这个过滤条件
+        List<HistoricTaskInstance> historicTaskInstances = processEngine.getHistoryService()
+                .createHistoricTaskInstanceQuery()
+                .taskDeleteReason("completed")
+                .list();
+        List<HistoricTaskInstance> historicTaskInstances2 = processEngine.getHistoryService()
+                .createHistoricTaskInstanceQuery()
+                .list();
+        System.out.println("执行完成的任务：" + historicTaskInstances.size());
+        System.out.println("所有的总任务数（执行完和当前未执行完）：" + historicTaskInstances2.size());
+    }
+
+
 }
