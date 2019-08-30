@@ -246,4 +246,17 @@ public class ActivityDeploy {
             System.out.println(task.getName() + ":"+ task.getAssignee());
         }
     }
+
+    /**
+     * 根据piid得到当前正在执行的流程实例的正在活动的节点
+     */
+    @Test
+    public void testActivity() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        ProcessInstance processInstance = processEngine.getRuntimeService().createProcessInstanceQuery()
+                .processInstanceId("22501")
+                .singleResult();
+        String activityId = processInstance.getActivityId();
+        System.out.println(activityId);
+    }
 }
