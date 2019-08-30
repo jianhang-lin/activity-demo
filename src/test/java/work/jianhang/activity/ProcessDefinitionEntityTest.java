@@ -5,6 +5,7 @@ import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.junit.Test;
@@ -121,5 +122,23 @@ public class ProcessDefinitionEntityTest {
             processInstances.add(processInstance);
         }
         return processInstances;
+    }
+
+    /**
+     * 根据当前的登录人能够推导出所在的流程定义
+     */
+    @Test
+    public void testGetProcessInstance() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Task> tasks = processEngine.getTaskService().createTaskQuery()
+                .taskAssignee("小毛").list();
+        for (Task task : tasks) {
+            String pdid = task.getProcessDefinitionId();
+            ProcessDefinition processDefinition = processEngine.getRepositoryService()
+                    .createProcessDefinitionQuery()
+                    .processDefinitionId(pdid)
+                    .singleResult();
+            System.out.println(processDefinition.getName());
+        }
     }
 }
