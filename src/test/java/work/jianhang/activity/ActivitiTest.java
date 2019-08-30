@@ -37,4 +37,15 @@ public class ActivitiTest {
         //这个是查看数据库中act_re_procdef表
         processEngine.getRuntimeService().startProcessInstanceById("shenqing:1:4");
     }
+
+    /**
+     * 3.完成请假申请
+     */
+    @Test
+    public void testQingjia() {} {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        //查看act_ru_task表
+        processEngine.getTaskService().complete("2504");
+    }
+
 }
