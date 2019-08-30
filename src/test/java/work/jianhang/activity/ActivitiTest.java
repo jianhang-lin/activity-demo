@@ -67,13 +67,28 @@ public class ActivitiTest {
     }
 
     /**
-     * 班主任小毛完成任务
+     * 5.班主任小毛完成任务
      */
     @Test
     public void testFinishTaskManager() {
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         //查看act_ru_task数据表
-        processEngine.getTaskService().complete("5002");
+        // processEngine.getTaskService().complete("5002");
+    }
+
+    /**
+     * 6.教务处大毛查询当前正在执行任务
+     */
+    @Test
+    public void testQueryTaskByDaMao() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Task> tasks = processEngine.getTaskService()
+                .createTaskQuery()
+                .taskAssignee("大毛")
+                .list();
+        for (Task task : tasks) {
+            System.out.println(task.getName());
+        }
     }
 
 
