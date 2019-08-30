@@ -3,6 +3,7 @@ package work.jianhang.activity;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -94,6 +95,21 @@ public class ActivityDeploy {
         for (Deployment deployment : deployments) {
             System.out.println(deployment.getId() + " 部署名称：" + deployment.getName());
         }
+    }
 
+    /**
+     * 查询所有的流程定义
+     */
+    @Test
+    public void testQueryAllPd() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<ProcessDefinition> processDefinitions = processEngine.getRepositoryService()
+                .createProcessDefinitionQuery()
+                .orderByProcessDefinitionVersion()
+                .desc()
+                .list();
+        for (ProcessDefinition processDefinition : processDefinitions) {
+            System.out.println(processDefinition.getName() + processDefinition.getVersion());
+        }
     }
 }
