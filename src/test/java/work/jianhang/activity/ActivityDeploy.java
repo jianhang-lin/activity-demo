@@ -134,4 +134,21 @@ public class ActivityDeploy {
         inputStream.close();
         outputStream.close();
     }
+
+    /**
+     * 根据pdid查看图片(在act_re_procdef数据表中)
+     */
+    @Test
+    public void testShowImageByPdid() throws IOException {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        InputStream inputStream = processEngine.getRepositoryService()
+                .getProcessDiagram("shenqing:1:4");
+        OutputStream outputStream = new FileOutputStream("/home/grant/IdeaProjects/activity/src/test/java/work/jianhang/activity/testShowImageByPdid.png");
+        int b = -1;
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b);
+        }
+        inputStream.close();
+        outputStream.close();
+    }
 }
