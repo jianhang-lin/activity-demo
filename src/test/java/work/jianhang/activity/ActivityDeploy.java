@@ -218,5 +218,17 @@ public class ActivityDeploy {
         }
     }
 
-
+    /**
+     * 查询所有的正在执行的任务
+     */
+    @Test
+    public void testQueryTasks() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Task> tasks = processEngine.getTaskService()
+                .createTaskQuery()
+                .list();
+        for (Task task : tasks) {
+            System.out.println(task.getName() + ":"+ task.getAssignee());
+        }
+    }
 }
