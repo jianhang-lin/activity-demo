@@ -2,9 +2,11 @@ package work.jianhang.activity;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.repository.Deployment;
 import org.junit.Test;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -60,6 +62,22 @@ public class ActivityDeploy {
     public void testDelete() {
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         processEngine.getRepositoryService().deleteDeployment("17501", Boolean.TRUE);
+    }
+
+    /**
+     * 根据名称查询流程部署
+     */
+    @Test
+    public void testQueryDeploymentByName() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Deployment> deployments = processEngine.getRepositoryService()
+                .createDeploymentQuery()
+                .orderByDeploymenTime()
+                .desc()
+                .deploymentName("请假流程").list();
+        for (Deployment deployment : deployments) {
+            System.out.println(deployment.getId());
+        }
     }
 
 }
