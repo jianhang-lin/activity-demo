@@ -80,4 +80,20 @@ public class ActivityDeploy {
         }
     }
 
+    /**
+     * 查询所有的部署流程
+     */
+    @Test
+    public void queryAllDeployment() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Deployment> deployments = processEngine.getRepositoryService()
+                .createDeploymentQuery()
+                .orderByDeploymenTime() // 按照部署时间排序
+                .desc() // 按照降序排序
+                .list();
+        for (Deployment deployment : deployments) {
+            System.out.println(deployment.getId() + " 部署名称：" + deployment.getName());
+        }
+
+    }
 }
