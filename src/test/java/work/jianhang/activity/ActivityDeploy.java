@@ -52,4 +52,14 @@ public class ActivityDeploy {
                 .addZipInputStream(zipInputStream)
                 .deploy();
     }
+
+    /**
+     * 删除已经部署的Activiti流程
+     */
+    @Test
+    public void testDelete() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        processEngine.getRepositoryService().deleteDeployment("17501", Boolean.TRUE);
+    }
+
 }
