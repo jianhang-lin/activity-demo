@@ -4,6 +4,7 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.junit.Test;
 
 import java.io.*;
@@ -167,5 +168,25 @@ public class ActivityDeploy {
         }
         inputStream.close();
         outputStream.close();
+    }
+
+    /**
+     * 启动流程实例，通过PID
+     */
+    @Test
+    public void testStartProcessInstanceByPid() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceById("shenqing:1:4");
+        System.out.println(processInstance.getId());
+    }
+
+    /**
+     * 根据pdkey启动流程实例，默认启动最高版本的
+     */
+    @Test
+    public void testStartProcessInstanceByPdKey() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("shenqing");
+        System.out.println(processInstance.getId());
     }
 }
