@@ -4,6 +4,9 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 //Task任务
 public class TaskTest {
 
@@ -15,11 +18,58 @@ public class TaskTest {
         processEngine.getRepositoryService()
                 .createDeployment()
                 .name("请假流程：情况一")
-                .addClasspathResource("task1.bpmn")
+                .addClasspathResource("task1.bmmn")
                 .addClasspathResource("task1.png")
                 .deploy();
     }
 
+    /**
+     * 启动流程实例
+     *    可以设置一个流程变量
+     */
+    @Test
+    public void testStartTask1() {
+        /**
+         * 流程变量
+         *   给<userTask id="请假申请" name="请假申请" activiti:assignee="#{student}"></userTask>
+         *     的student赋值
+         */
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("student", "小明");
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        processEngine.getRuntimeService().startProcessInstanceById("shenqingTask1:1:27504", variables);
+    }
+
+    /**
+     * 在完成请假申请的任务的时候，给班主任审批的节点赋值任务的执行人
+     */
+    @Test
+    public void testFinishTask1_Teacher(){
+        Map<String, Object> variables = new HashMap<String, Object>();
+        variables.put("teacher", "我是小明的班主任");
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        processEngine.getTaskService().complete("30005", variables); //完成任务的同时设置流程变量
+    }
+
+    /**
+     * 在完成班主任审批的情况下，给教务处节点赋值
+     */
+    @Test
+    public void testFinishTask_Manager(){
+        Map<String, Object> variables = new HashMap<String, Object>();
+        variables.put("manager", "我是小明的教务处处长");
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        // processEngine.getTaskService().complete("1603", variables); //完成任务的同时设置流程变量
+    }
+
+    /**
+     * 结束流程实例
+     */
+    @Test
+    public void testFinishTask(){
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        //processEngine.getTaskService().complete("1703");
+    }
 
 //    情况二：有可能一个任务节点的执行人是固定的。
 //    实例：比如，在“公司财务报账”的流程中，最后一个审批的人，一定是财务部的最大的BOSS，所以，这样该流程的最后一个节点执行人，是不是就已经确定是为“财务部最大BOSS”了。
