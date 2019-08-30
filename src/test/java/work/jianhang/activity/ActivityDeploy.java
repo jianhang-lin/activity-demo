@@ -5,6 +5,7 @@ import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.junit.Test;
 
 import java.io.*;
@@ -197,6 +198,24 @@ public class ActivityDeploy {
     public void testFinishTask() {
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
          //processEngine.getTaskService().complete("22504");
+    }
+
+    /**
+     * 查询任务
+     * 根据任务的执行人查询正在执行任务(通过act_ru_task数据表)
+     */
+    @Test
+    public void testQueryTaskByAssigness() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Task> tasks = processEngine.getTaskService()
+                .createTaskQuery()
+                .orderByTaskCreateTime()
+                .desc()
+                .taskAssignee("小毛")
+                .list();
+        for (Task task : tasks) {
+            System.out.println(task.getName() + ":"+ task.getAssignee());
+        }
     }
 
 
