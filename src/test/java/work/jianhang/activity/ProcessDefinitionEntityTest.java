@@ -6,8 +6,10 @@ import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,5 +95,31 @@ public class ProcessDefinitionEntityTest {
         System.out.println("width:"+ activity.getWidth());
         System.out.println("x:"+activity.getX());
         System.out.println("y:"+activity.getY());
+    }
+
+    /**
+     * 当前用户-->当前用户正在执行的任务--->当前正在执行的任务的piid-->该任务所在的流程实例
+     */
+    @Test
+    public void testGetProcessInstanceByUser() {
+        List<ProcessInstance> result = getProcessInstanceByUser("小毛");
+        for (ProcessInstance processInstance : result) {
+            System.out.println(processInstance.getId());
+        }
+    }
+
+    List<ProcessInstance> getProcessInstanceByUser(String assignee) {
+        List<ProcessInstance> processInstances = new ArrayList<>();
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Task> tasks = processEngine.getTaskService().createTaskQuery()
+                .taskAssignee(assignee).list();
+        for (Task task : tasks) {
+            String piid = task.getProcessInstanceId();
+            ProcessInstance processInstance = processEngine.getRuntimeService().createProcessInstanceQuery()
+                    .processInstanceId(piid)
+                    .singleResult();
+            processInstances.add(processInstance);
+        }
+        return processInstances;
     }
 }
