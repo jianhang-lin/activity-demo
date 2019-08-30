@@ -151,4 +151,21 @@ public class ActivityDeploy {
         inputStream.close();
         outputStream.close();
     }
+
+    /**
+     * 查看bpmn文件(在act_re_procdef数据表中)
+     */
+    @Test
+    public void testShowBpmn() throws IOException {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        InputStream inputStream = processEngine.getRepositoryService()
+                .getProcessModel("shenqing:1:4");
+        OutputStream outputStream = new FileOutputStream("/home/grant/IdeaProjects/activity/src/test/java/work/jianhang/activity/testShowBpmn.bpmn");
+        int b = -1;
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b);
+        }
+        inputStream.close();
+        outputStream.close();
+    }
 }
