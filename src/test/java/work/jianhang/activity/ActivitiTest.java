@@ -27,4 +27,14 @@ public class ActivitiTest {
                 .addClasspathResource("shenqing.png")
                 .deploy();
     }
+
+    /**
+     * 2：启动流程实例
+     */
+    @Test
+    public void testStartProcessInstance() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        //这个是查看数据库中act_re_procdef表
+        processEngine.getRuntimeService().startProcessInstanceById("shenqing:1:4");
+    }
 }
