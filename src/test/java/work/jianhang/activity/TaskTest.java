@@ -37,7 +37,7 @@ public class TaskTest {
         Map<String, Object> variables = new HashMap<>();
         variables.put("student", "小明");
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
-        processEngine.getRuntimeService().startProcessInstanceById("shenqingTask1:1:27504", variables);
+        processEngine.getRuntimeService().startProcessInstanceById("Task1:1:4", variables);
     }
 
     /**
@@ -48,7 +48,7 @@ public class TaskTest {
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("teacher", "我是小明的班主任");
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
-        processEngine.getTaskService().complete("30005", variables); //完成任务的同时设置流程变量
+        // processEngine.getTaskService().complete("2505", variables); //完成任务的同时设置流程变量
     }
 
     /**
@@ -59,7 +59,7 @@ public class TaskTest {
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("manager", "我是小明的教务处处长");
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
-        // processEngine.getTaskService().complete("1603", variables); //完成任务的同时设置流程变量
+        // processEngine.getTaskService().complete("5003", variables); //完成任务的同时设置流程变量
     }
 
     /**
@@ -68,7 +68,7 @@ public class TaskTest {
     @Test
     public void testFinishTask(){
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
-        //processEngine.getTaskService().complete("1703");
+        // processEngine.getTaskService().complete("7503");
     }
 
 //    情况二：有可能一个任务节点的执行人是固定的。
