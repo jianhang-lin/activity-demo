@@ -2,9 +2,12 @@ package work.jianhang.activity;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.task.IdentityLink;
+import org.activiti.engine.task.Task;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //Task任务
@@ -116,4 +119,69 @@ public class TaskTest {
     }
 //    情况四：一个任务节点有n多人能够执行该任务，但是只要有一个人执行完毕就完成该任务了：组任务
 //    实例：比如，“进入地铁站通道”的流程，我们一般地铁都是有N个安全检查的入口，有很多个人在进行检查，那么我们要想通过检查，那么任意一个检察员只要通过即可。
+    @Test
+    public void startDeployTestTask4() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        processEngine.getRepositoryService()
+                .createDeployment()
+                .name("请假流程：情况四")
+                .addClasspathResource("task4.bpmn")
+                .addClasspathResource("task4.png")
+                .deploy();
+    }
+
+    /**
+     * 当启动完流程实例以后，进入了"财务报销"节点，该节点是一个组任务
+     *    这个时候，组任务的候选人就会被插入到两张表中
+     *       act_ru_identitylink  存放的是当前正在执行的组任务的候选人
+     *       act_hi_identitylink
+     */
+    @Test
+    public void testStartTask4() {
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        processEngine.getRuntimeService().startProcessInstanceById("Task4:1:20004");
+    }
+
+    /**
+     * 对于act_hi_identitylink表，根据任务ID，即TASK_ID字段查询候选人
+     */
+    @Test
+    public void testQueryCandidateByTaskId(){
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<IdentityLink> identityLinks = processEngine.getTaskService()
+                .getIdentityLinksForTask("22504");
+        for (IdentityLink identityLink : identityLinks) {
+            System.out.println(identityLink.getUserId());
+        }
+    }
+
+    /**
+     * 对于act_hi_identitylink表，根据候选人,即USER_ID_查看组任务
+     */
+    @Test
+    public void testQueryTaskByCandidate(){
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        List<Task> tasks = processEngine.getTaskService()
+                .createTaskQuery()
+                .taskCandidateUser("财务主管2")
+                .list();
+        for (Task task : tasks) {
+            System.out.println(task.getName());
+        }
+    }
+
+    /**
+     * 候选人中的其中一个人认领任务
+     */
+    @Test
+    public void testClaimTask(){
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        processEngine.getTaskService()
+                /**
+                 * 第一个参数为taskId
+                 * 第二个参数为认领人
+                 */
+                .claim("22504", "财务主管1");
+    }
+
 }
