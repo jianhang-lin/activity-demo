@@ -18,7 +18,7 @@ public class TaskTest {
         processEngine.getRepositoryService()
                 .createDeployment()
                 .name("请假流程：情况一")
-                .addClasspathResource("task1.bmmn")
+                .addClasspathResource("task1.bpmn")
                 .addClasspathResource("task1.png")
                 .deploy();
     }

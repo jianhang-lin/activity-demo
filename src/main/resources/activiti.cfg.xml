@@ -5,9 +5,9 @@
 
     <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
         <property name="jdbcDriver" value="com.mysql.jdbc.Driver"></property>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/activities?useUnicode=true&amp;characterEncoding=utf8"></property>
-        <property name="jdbcUsername" value="root"></property>
-        <property name="jdbcPassword" value="root"></property>
+        <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/postgres"></property>
+        <property name="jdbcUsername" value="postgres"></property>
+        <property name="jdbcPassword" value="postgres"></property>
         <property name="databaseSchemaUpdate" value="true"></property>
     </bean>
 </beans>
